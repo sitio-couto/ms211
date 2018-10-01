@@ -2,7 +2,8 @@ import numpy as np
 np.set_printoptions(2)
 
 n = 6
-x = np.matrix([[4,-1,0,-1,0,0],[-4,4,-1,0,-1,0],[0,-1,4,0,0,-1],[-1,0,0,4,-1,0],[0,0,-1,0,-1,4],[0,0,-1,0,-1,4]])
+x = np.matrix([[4,-1,0,-1,0,0],[-1,4,-1,0,-1,0],[0,-1,4,0,0,-1],[-1,0,0,4,-1,0],[0,-1,0,-1,4,-1],[0,0,-1,0,-1,4]])
+# x = np.matrix([[1,3,5],[2,4,7],[1,1,0]])
 b = np.identity(n)
 a = np.matrix([[1,0,0,0,0],[0,1,0,0,0],[0,0,1,0,0],[1,0,0,4,0],[1,1,-1,2,-1]])
 
@@ -58,11 +59,12 @@ def gauss_jacobi (a, x, b, n):
     gauss_seidel (a,x,b,n)
 
 
-gauss_jacobi(a,  [0,0,0,0,0], [1,1,1,5,2], 5)
+# gauss_jacobi(a,  [0,0,0,0,0], [1,1,1,5,2], 5)
 
-# print (x)
-# l, u = reduce_to_lu (x.copy(),n)
-# print ("\n\n", l, "\n\n", u, "\n\n\n", np.matmul(l,u)==x )
+print (x)
+l, u = reduce_to_lu (x.astype(float),n)
+print ("\n\n", l, "\n\n", u, "\n\n\n", np.matmul(l,u)==x )
+print (np.matmul(l,u))
 # r,r2 = [],[]
 # for i in range(0,n):
 #     r.append(solve_lower_tri (l,b[i],n))
