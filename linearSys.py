@@ -10,6 +10,7 @@ a = np.matrix([[1,0,0,0,0],[0,1,0,0,0],[0,0,1,0,0],[1,0,0,4,0],[1,1,-1,2,-1]])
 def reduce_to_lu (u, n):
     l,i,j = np.identity(n),0,0
     for d in range(0, n):
+        if (not u[d,d]): continue
         for i in range(d+1, n):
             l[i,d] = u[i,d] / u[d,d]
             for j in range(d, n):
@@ -63,7 +64,7 @@ def gauss_jacobi (a, x, b, n):
 print (x)
 l, u = reduce_to_lu (x.astype(float),n)
 print ("\n\n", l, "\n\n", u, "\n\n\n", np.matmul(l,u)==x )
-
+print (np.matmul(l,u))
 # r,r2 = [],[]
 # for i in range(0,n):
 #     r.append(solve_lower_tri (l,b[i],n))
