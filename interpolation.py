@@ -1,3 +1,5 @@
+from numpy import matrix
+
 x = [1.7,2,2.5,3]
 y = [-4.2,2,-1.4,0.8]
 
@@ -21,5 +23,7 @@ def diff_table(x, y):
     print_diff_table(orders)
     return orders
 
+def vandermonde(x, y):
+    A = matrix.zeros()
 
 orders = diff_table(x, y)
