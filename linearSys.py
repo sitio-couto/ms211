@@ -65,6 +65,7 @@ print (x)
 l, u = reduce_to_lu (x.astype(float),n)
 print ("\n\n", l, "\n\n", u, "\n\n\n", np.matmul(l,u)==x )
 print (np.matmul(l,u))
+
 # r,r2 = [],[]
 # for i in range(0,n):
 #     r.append(solve_lower_tri (l,b[i],n))
