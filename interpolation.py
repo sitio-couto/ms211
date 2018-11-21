@@ -29,9 +29,8 @@ def vandermonde(x, y):
 
     return linalg.solve(a, y)
 
-def lagrange(x, y):
+def lagrange(var, x, y):
     pn = 0
-    var = Symbol("x")
 
     for i in range(len(y)):
         lx = 1
@@ -67,38 +66,31 @@ def min_squares(var, g, x, y):
 
     return linalg.solve(a, b)
 
+def euler_improved(x, y, x0, y0, f, h, end):
+    if x0 >= end : return []
+    aux = f.subs([(x,x0),(y,y0)])
+    y1 = y0 + (h/2)*(aux + f.subs([(x,x0+h),(y,y0+h*aux)]))
+    return [y1]+euler_improved(x, y, x0+h, y1, f, h, end)
+
 #### ENTRADAS E SAIDAS #########################################################
 
-# Entrada exercício 1
+# Exercício 1
+var1 = Symbol("x")
 x1 = [1.7,2,2.5,3]
 y1 = [-4.2,2,-1.4,0.8]
-# print("SAÍDA EXERCÍCIO 1")
-# pn = lagrange(x1[:3], y1[:3])
-# print(bissect(pn + 3, [1.7, 2], 0.01))
+print("\nSAÍDA EXERCÍCIO 1")
+pn = lagrange(var1, x1[:3], y1[:3])
+print(bissect(pn + 3, [1.7, 2], 0.01))
 
-# Entrada exercício 3
+# Exercício 3
 var3 = Symbol("x")
 x3 = [-2, -1, 0, 1, 2]
 y3 = [x**-2 for x in [1, 2, 3, 2, 1]]
 g3 = [var3**2, sympify(1)]
-print("SAÍDA EXERCÍCIO 3")
+print("\nSAÍDA EXERCÍCIO 3")
 print(min_squares(var3, g3, x3, y3))
 
-# Entrada exercício 5
-var5 = Symbol("t")
-x5 = [0, 1, 2, 3, 4]
-y5 = [log(1000/x - 1) for x in [200, 400, 650, 850, 950]]
-g5 = [sympify(1), var5]
-print("SAÍDA EXERCÍCIO 5")
-print(min_squares(var5, g5, x5, y5))
-
-# # Teste de corretude (baseado no exemplo de quadrados minimos nao linear do livro)
-# varex = Symbol("x")
-# xex = [-1, -0.7, -0.4, -0.1, 0.2, 0.5, 0.8, 1]
-# yex = [log(x) for x in [36.547, 17.264, 8.155, 3.852, 1.820, 0.860, 0.406, 0.246]]
-# gex = [sympify(1), varex]
-# print("EXEMPLO:")
-# print(min_squares(varex, gex, xex, yex))
+# Exercício 4
 x = Symbol("X")
 a = Symbol("Yi-1")
 b = Symbol("Yi")
@@ -107,3 +99,22 @@ h = Symbol("h")
 dy1 = (c-a)/(2*h)
 dy2 = (c - 2*b + a)/h**2
 deq = dy2 + x*dy1 + b - 5*x
+print("\nSAIDA EXERCÍCIO 4")
+print(deq.subs([(x,0.25),(a,1),(h,0.25)]))
+print(deq.subs([(x,0.5),(h,0.25)]))
+print(deq.subs([(x,0.75),(c,0),(h,0.25)]))
+
+# Entrada exercício 5
+# Letra B
+var5 = Symbol("t")
+x5 = [0, 1, 2, 3, 4]
+y5 = [200, 400, 650, 850, 950]
+g5 = [sympify(1), var5]
+print("\nSAÍDA EXERCÍCIO 5 (A)")
+print(min_squares(var5, g5, x5, [log(1000/x - 1) for x in y5]))
+print("\nSAÍDA EXERCÍCIO 5 (C)")
+print(lagrange(var5, x5[:3], y5[:3]).subs(var5, 480))
+print("\nSAÍDA EXERCÍCIO 5 (D)")
+var5_yt = Symbol("y")
+dy = -var5_yt*(var5_yt/1000 - 1)
+print(euler_improved(Symbol("any"), var5_yt, 0, 200, dy, 0.5, 1))
