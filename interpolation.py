@@ -1,5 +1,5 @@
 from sympy import *
-from numpy import matrix, zeros, linalg, log
+from numpy import matrix, zeros, linalg, log, inf
 
 def print_diff_table(orders):
     for i in range(len(orders)):
@@ -9,16 +9,30 @@ def print_diff_table(orders):
         print("\n")
 
 def diff_table(x, y):
-    orders = [y.copy()]
+    dim = 2*len(y)-1
+    table = [[inf for i in range(dim)] for y in range(len(y))]
+    xt = [inf for i in range(dim)]
 
-    for ord in range(1,len(x)):
-        new_ord = []
-        for i in range(len(x)-ord):
-            last_ord = orders[-1]
-            new_ord.append((last_ord[i+1]-last_ord[i])/(x[i+ord]-x[i]))
-        orders.append(new_ord.copy())
+    for i in range(0,dim,2):
+        table[0][i] = y[int(i/2)]
+        xt[i] = x[int(i/2)]
 
-    return orders
+    for ord in range(1, len(y)):
+        prev = table[ord-1]
+        for i in range(ord, dim-ord, 2):
+            table[ord][i] = (prev[i+1]-prev[i-1])/(xt[i+ord]-xt[i-ord])
+
+    print("\nDiff table")
+    for i in range(len(y)): print("%-10s" %("Order "+str(i)), end="")
+    for j in range(dim):
+        print("")
+        for i in range(len(y)):
+            if table[i][j] == inf : print("%-10s" %"", end="")
+            elif table[i][j] >= 0 : print(" %-9.2f" %table[i][j], end="")
+            else : print("%-10.2f" %table[i][j], end="")
+
+    print("")
+    return
 
 def vandermonde(x, y):
     dim = len(x)
@@ -76,11 +90,12 @@ def euler_improved(x, y, x0, y0, f, h, end):
 
 # Exercício 1
 var1 = Symbol("x")
-x1 = [1.7,2,2.5,3]
-y1 = [-4.2,2,-1.4,0.8]
+x1 = [-4.2,-1.4,0.8,2]
+y1 = [1.7,2.5,3,2]
 print("\nSAÍDA EXERCÍCIO 1")
 pn = lagrange(var1, x1[:3], y1[:3])
-print(bissect(pn + 3, [1.7, 2], 0.01))
+print(pn.subs(var1, -3))
+diff_table([-4.2,-1.4,0.8,2], [1.7,2.5,3,2])
 
 # Exercício 3
 var3 = Symbol("x")
@@ -118,3 +133,8 @@ print("\nSAÍDA EXERCÍCIO 5 (D)")
 var5_yt = Symbol("y")
 dy = -var5_yt*(var5_yt/1000 - 1)
 print(euler_improved(Symbol("any"), var5_yt, 0, 200, dy, 0.5, 1))
+
+
+## P2 ####################################################################
+print("\n\n----P2---------------\n")
+diff_table([0,0.3,0.5,0.75,1], [1,2,3,2,1])
