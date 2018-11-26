@@ -1,5 +1,5 @@
 from sympy import *
-from numpy import matrix, zeros, linalg, log, inf
+from numpy import matrix, zeros, linalg, inf
 
 def print_diff_table(orders):
     for i in range(len(orders)):
@@ -97,6 +97,19 @@ pn = lagrange(var1, x1[:3], y1[:3])
 print(pn.subs(var1, -3))
 diff_table([-4.2,-1.4,0.8,2], [1.7,2.5,3,2])
 
+#Exercício 2
+h2 = Symbol("h")
+a2 = Symbol("Xi")
+b2 = Symbol("Xi+1")
+c2 = Symbol("Xi+2")
+x2 = Symbol("x")
+f2 = x2**3 + ln(x2)
+sp = (h2/3)*(f2.subs(x2,a2) + 4*f2.subs(x2,b2) + f2.subs(x2,c2))
+print("\nSAÍDA EXERCÍCIO 2")
+step1 = [(h2,0.25),(a2,1),(b2,1.25),(c2,1.5)]
+step2 = [(h2,0.25),(a2,1.5),(b2,1.75),(c2,2)]
+result = sp.subs(step1) + sp.subs(step2)
+print(result.evalf())
 # Exercício 3
 var3 = Symbol("x")
 x3 = [-2, -1, 0, 1, 2]
