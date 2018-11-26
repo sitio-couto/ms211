@@ -54,15 +54,15 @@ def lagrange(var, x, y):
 
     return pn
 
-def bissect(f, i, e):
+def bissect(v, f, i, e):
     x = (i[0]+i[1])/2
-    y = f.subs(Symbol("x"), x)
+    y = f.subs(v, x)
 
     if y < 0 : i[0] = x
     else: i[1] = x
 
     if (i[1]-i[0]) < e : return x
-    else: return bissect(f, i, e)
+    else: return bissect(v, f, i, e)
 
 def min_squares(var, g, x, y):
     dim = len(g)
@@ -133,7 +133,6 @@ print(deq.subs([(x,0.5),(h,0.25)]))
 print(deq.subs([(x,0.75),(c,0),(h,0.25)]))
 
 # Entrada exercício 5
-# Letra B
 var5 = Symbol("t")
 x5 = [0, 1, 2, 3, 4]
 y5 = [200, 400, 650, 850, 950]
@@ -141,13 +140,8 @@ g5 = [sympify(1), var5]
 print("\nSAÍDA EXERCÍCIO 5 (A)")
 print(min_squares(var5, g5, x5, [log(1000/x - 1) for x in y5]))
 print("\nSAÍDA EXERCÍCIO 5 (C)")
-print(lagrange(var5, x5[:3], y5[:3]).subs(var5, 480))
+print(bissect(var5, lagrange(var5, x5[:3], y5[:3])-480, [1, 1.5], 0.001))
 print("\nSAÍDA EXERCÍCIO 5 (D)")
 var5_yt = Symbol("y")
 dy = -var5_yt*(var5_yt/1000 - 1)
 print(euler_improved(Symbol("any"), var5_yt, 0, 200, dy, 0.5, 1))
-
-
-## P2 ####################################################################
-print("\n\n----P2---------------\n")
-diff_table([0,0.3,0.5,0.75,1], [1,2,3,2,1])
